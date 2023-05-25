@@ -11,9 +11,6 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "outDir": "./dist",
     "baseUrl": ".",
-    "paths": {
-      "@sample/*": ["src/*"]
-    },
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
