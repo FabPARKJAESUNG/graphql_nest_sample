@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 
 const Provider: React.FC<{ children?: ReactNode }> = ({ children }) => {
   const client = new ApolloClient({
-    uri: "http://localhost:4000",
+    uri: "https://flyby-router-demo.herokuapp.com/",
     cache: new InMemoryCache(),
   });
 
