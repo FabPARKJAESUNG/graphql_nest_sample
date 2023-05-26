@@ -5,21 +5,74 @@ import { startStandaloneServer } from "@apollo/server/standalone";
 // that together define the "shape" of queries that are executed against
 // your data.
 const typeDefs = `#graphql
-  # Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
+ 
+  type User {
+    id: ID!
+    name: String
+    email: String
+    egPosts: [Post]
+  }
 
-  # This "Book" type defines the queryable fields for every book in our data source.
+  type Post {
+    id: ID!
+    title: String!
+    body: String!
+    userId: ID!
+  }
+
   type Book {
     title: String
     author: String
   }
 
-  # The "Query" type is special: it lists all of the available queries that
-  # clients can execute, along with the return type for each. In this
-  # case, the "books" query returns an array of zero or more Books (defined above).
   type Query {
+    user(id: ID): User
+    users: [User]
+    posts: [Post]
+    book(title: String): Book
     books: [Book]
   }
 `;
+const posts = [
+  {
+    id: "1",
+    title: "test1",
+    body: "body1",
+    userId: "1",
+  },
+  {
+    id: "2",
+    title: "test1-2",
+    body: "body1-2",
+    userId: "1",
+  },
+  {
+    id: "3",
+    title: "test2",
+    body: "body2",
+    userId: "2",
+  },
+];
+const users = [
+  {
+    id: "1",
+    name: "pasona1",
+    email: "pasona1@fab.pasona.tech",
+    egPosts: [posts[0], posts[1]],
+  },
+  {
+    id: "2",
+    name: "pasona2",
+    email: "pasona2@fab.pasona.tech",
+    egPosts: [posts[2]],
+  },
+  {
+    id: "3",
+    name: "pasona3",
+    email: "pasona3@fab.pasona.tech",
+    egPosts: [],
+  },
+];
 
 const books = [
   {
@@ -36,7 +89,11 @@ const books = [
 // This resolver retrieves books from the "books" array above.
 const resolvers = {
   Query: {
+    user: (parent, args) => users.find((item) => item.id === args.id),
+    users: () => users,
+    book: (parent, args) => books.find((item) => item.title === args.title),
     books: () => books,
+    posts: () => posts,
   },
 };
 
