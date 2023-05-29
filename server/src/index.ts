@@ -49,7 +49,6 @@ const resolvers = {
   },
   Mutation: {
     createUser: (_, args) => {
-      console.log(args);
       const id = uuidv4();
       return prisma.user.create({
         data: {

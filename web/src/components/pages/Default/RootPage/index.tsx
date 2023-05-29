@@ -1,11 +1,7 @@
 import React from "react";
 import OrganismRootPage from "src/components/organisms/Default/RootPage";
 
-export type Props = {
-  path?: string;
-};
-
-const RootPage: React.FC<Props> = () => {
+const RootPage: React.FC = () => {
   return <OrganismRootPage />;
 };
 

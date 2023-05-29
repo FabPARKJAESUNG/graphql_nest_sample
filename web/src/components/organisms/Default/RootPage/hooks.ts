@@ -16,8 +16,10 @@ const TestHook = () => {
   const [createMutation] = useCreateUserMutation();
 
   const createUser = useCallback(
-    async (props: { name: string; email: string }) => {
-      return await createMutation({ variables: props });
+    async (props: { createUserName2: string; email: string }) => {
+      return await createMutation({
+        variables: props,
+      });
     },
     [createMutation]
   );

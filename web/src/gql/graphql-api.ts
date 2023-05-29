@@ -7,7 +7,7 @@ export function useGetUserLazyQuery(props?: { variables: { name: string } }) {
   return Apollo.useLazyQuery(GET_USER, options);
 }
 export function useCreateUserMutation(props?: {
-  variables: { name: string; email: string };
+  variables: { createUserName2: string; email: string };
 }) {
   const options = { ...props };
   return Apollo.useMutation<any>(CREATE_USER, options);
