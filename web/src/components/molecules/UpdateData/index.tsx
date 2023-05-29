@@ -4,7 +4,7 @@ import React, { useCallback, useState } from "react";
 
 export type Props = {
   onClick: (data: {
-    createUserName2: string;
+    newName: string;
     email: string;
   }) => Promise<FetchResult<any>>;
 };
@@ -13,7 +13,7 @@ const RootPage: React.FC<Props> = ({ onClick: createUser }) => {
   const [email, setEmail] = useState<string>("");
 
   const handleClick = useCallback(async () => {
-    await createUser({ createUserName2: name, email });
+    await createUser({ newName: name, email });
   }, [createUser, name, email]);
 
   const handleUsernameInput = useCallback(
