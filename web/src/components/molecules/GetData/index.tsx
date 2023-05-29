@@ -12,8 +12,8 @@ export type Props = {
 const RootPage: React.FC<Props> = ({ datas, onClick }) => {
   const [name, setName] = useState<string>();
   const [email, setEmail] = useState<string>();
-  const handleClick = useCallback(() => {
-    onClick({ name: "pasona1" });
+  const handleClick = useCallback(async () => {
+    await onClick({ name: "pasona2" });
   }, [onClick]);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const RootPage: React.FC<Props> = ({ datas, onClick }) => {
     <Grid container m={1}>
       <Grid item xs={2}>
         <Button color="primary" variant="contained" onClick={handleClick}>
-          Get Pasona1
+          Get Pasona2
         </Button>
       </Grid>
       <Grid container direction={"column"} item xs={3}>

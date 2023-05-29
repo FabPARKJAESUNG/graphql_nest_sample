@@ -8,8 +8,8 @@ const TestHook = () => {
   const [searchUser, { data: datas }] = useGetUserLazyQuery();
 
   const handlFind = useCallback(
-    (props: { name: string }) => {
-      return searchUser();
+    async (props: { name: string }) => {
+      return await searchUser({ variables: props });
     },
     [searchUser]
   );
@@ -17,9 +17,7 @@ const TestHook = () => {
 
   const createUser = useCallback(
     async (props: { name: string; email: string }) => {
-      await createMutation({
-        variables: { name: props.name, email: props.email },
-      });
+      return await createMutation({ variables: props });
     },
     [createMutation]
   );

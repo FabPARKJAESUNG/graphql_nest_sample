@@ -39,7 +39,6 @@ const prisma = new PrismaClient();
 const resolvers = {
   Query: {
     user: (parent, args) => {
-      console.log(args);
       return prisma.user.findFirst({
         where: { name: args.name },
         include: { posts: true },

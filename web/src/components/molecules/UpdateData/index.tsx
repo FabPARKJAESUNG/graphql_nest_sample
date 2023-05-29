@@ -1,18 +1,16 @@
+import { FetchResult } from "@apollo/client";
 import { Button, Grid, TextField } from "@mui/material";
 import React, { useCallback, useState } from "react";
 
 export type Props = {
-  onClick: (data: { name: string; email: string }) => Promise<void>;
+  onClick: (data: { name: string; email: string }) => Promise<FetchResult<any>>;
 };
 const RootPage: React.FC<Props> = ({ onClick: createUser }) => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
 
   const handleClick = useCallback(async () => {
-    if (createUser) {
-      console.log(name, email);
-      await createUser({ name, email });
-    }
+    await createUser({ name, email });
   }, [createUser, name, email]);
 
   const handleUsernameInput = useCallback(
