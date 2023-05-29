@@ -4,14 +4,16 @@ import React, { useCallback, useEffect, useState } from "react";
 
 export type Props = {
   datas: any;
-  onClick: (name: string) => Promise<QueryResult<any, { name: string }>>;
+  onClick: (props: {
+    name: string;
+  }) => Promise<QueryResult<any, { name: string }>>;
 };
 
 const RootPage: React.FC<Props> = ({ datas, onClick }) => {
   const [name, setName] = useState<string>();
   const [email, setEmail] = useState<string>();
   const handleClick = useCallback(() => {
-    onClick("pasona1");
+    onClick({ name: "pasona1" });
   }, [onClick]);
 
   useEffect(() => {
