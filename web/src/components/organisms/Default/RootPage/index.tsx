@@ -6,11 +6,11 @@ import MoleculeUpdateData from "src/components/molecules/UpdateData";
 import useHooks from "./hooks";
 
 const RootPage: React.FC = () => {
-  const { datas, handlFind } = useHooks();
+  const { datas, handlFind, createUser } = useHooks();
   return (
     <Grid container direction={"column"}>
       <MoleculeGetData datas={datas} onClick={handlFind} />
-      {/* <MoleculeUpdateData onClick={createUser} /> */}
+      <MoleculeUpdateData onClick={createUser} />
     </Grid>
   );
 };

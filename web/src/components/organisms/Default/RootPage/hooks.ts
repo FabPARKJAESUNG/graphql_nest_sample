@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import {
   useCreateUserMutation,
   useGetUserLazyQuery,
@@ -14,19 +14,23 @@ const TestHook = () => {
     [searchUser]
   );
 
-  // const [createMutation] = useCreateUserMutation();
+  const [createMutation] = useCreateUserMutation();
 
-  // const createUser = useCallback(
-  //   async (data: { name: string; email: string }) => {
-  //     return await createMutation({ variables: data });
-  //   },
-  //   [createMutation]
-  // );
+  const createUser = useCallback(
+    async (data: { name: string; email: string }) => {
+      console.log(data);
+      const ddd = await createMutation({
+        variables: data,
+      });
+      console.log(data);
+    },
+    [createMutation]
+  );
 
   return {
     datas,
     handlFind,
-    // createUser,
+    createUser,
   };
 };
 
