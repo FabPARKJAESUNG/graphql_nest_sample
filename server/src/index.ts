@@ -1,6 +1,7 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
-
+import { PrismaClient } from "@prisma/client";
+import { v4 as uuidv4 } from "uuid";
 // A schema is a collection of type definitions (hence "typeDefs")
 // that together define the "shape" of queries that are executed against
 // your data.
@@ -10,90 +11,68 @@ const typeDefs = `#graphql
     id: ID!
     name: String
     email: String
-    egPosts: [Post]
+    posts: [Post]
   }
 
   type Post {
     id: ID!
     title: String!
     body: String!
-    userId: ID!
-  }
-
-  type Book {
-    title: String
-    author: String
+    authorId: ID!
   }
 
   type Query {
     user(id: ID): User
     users: [User]
     posts: [Post]
-    book(title: String): Book
-    books: [Book]
+  }
+
+  type Mutation {
+    createUser(name: String!, email: String!): User
+    updateUser(id: String!, name: String!): User
+    deleteUser(id: String!): User
   }
 `;
-const posts = [
-  {
-    id: "1",
-    title: "test1",
-    body: "body1",
-    userId: "1",
-  },
-  {
-    id: "2",
-    title: "test1-2",
-    body: "body1-2",
-    userId: "1",
-  },
-  {
-    id: "3",
-    title: "test2",
-    body: "body2",
-    userId: "2",
-  },
-];
-const users = [
-  {
-    id: "1",
-    name: "pasona1",
-    email: "pasona1@fab.pasona.tech",
-    egPosts: [posts[0], posts[1]],
-  },
-  {
-    id: "2",
-    name: "pasona2",
-    email: "pasona2@fab.pasona.tech",
-    egPosts: [posts[2]],
-  },
-  {
-    id: "3",
-    name: "pasona3",
-    email: "pasona3@fab.pasona.tech",
-    egPosts: [],
-  },
-];
-
-const books = [
-  {
-    title: "The Awakening",
-    author: "Kate Chopin",
-  },
-  {
-    title: "City of Glass",
-    author: "Paul Auster",
-  },
-];
-
+const prisma = new PrismaClient();
 // Resolvers define how to fetch the types defined in your schema.
 // This resolver retrieves books from the "books" array above.
 const resolvers = {
   Query: {
-    user: (parent, args) => users.find((item) => item.id === args.id),
-    users: () => users,
-    book: (parent, args) => books.find((item) => item.title === args.title),
-    books: () => books,
-    posts: () => posts,
+    user: (parent, args) => {
+      return prisma.user.findUnique({
+        where: { id: args.id },
+        include: { posts: true },
+      });
+    },
+    users: () => prisma.user.findMany({ include: { posts: true } }),
+    posts: () => prisma.post.findMany(),
+  },
+  Mutation: {
+    createUser: (_, args) => {
+      const id = uuidv4();
+      return prisma.user.create({
+        data: {
+          id: id,
+          name: args.name,
+          email: args.email,
+        },
+      });
+    },
+    updateUser: (_, args) => {
+      return prisma.user.update({
+        where: {
+          id: args.id,
+        },
+        data: {
+          name: args.name,
+        },
+      });
+    },
+    deleteUser: (_, args) => {
+      return prisma.user.delete({
+        where: { id: args.id },
+      });
+    },
   },
 };
 

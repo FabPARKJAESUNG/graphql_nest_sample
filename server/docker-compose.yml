@@ -1,0 +1,15 @@
+version: "3.7"
+
+services:
+  # ローカル起動で利用
+  apollo-db:
+    container_name: apollo-db
+    build:
+      context: .
+      dockerfile: Dockerfile.db
+    ports:
+      - 25432:5432
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: apolloSample
