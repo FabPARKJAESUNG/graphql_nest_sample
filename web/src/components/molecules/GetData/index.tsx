@@ -1,36 +1,38 @@
+import { QueryResult } from "@apollo/client";
 import { Button, Grid, TextField } from "@mui/material";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 export type Props = {
-  onClick?: () => void;
+  datas: any;
+  onClick?: (name: string) => Promise<QueryResult<any, { name: string }>>;
 };
 
-const RootPage: React.FC<Props> = ({ onClick }) => {
-  const [id, setId] = useState<string>();
+const RootPage: React.FC<Props> = ({ datas, onClick }) => {
   const [name, setName] = useState<string>();
-  const [description, setDescription] = useState<string>();
-  const [photo, setPhoto] = useState<any>();
-
+  const [email, setEmail] = useState<string>();
   const handleClick = useCallback(() => {
-    onClick?.();
+    if (onClick) {
+      onClick("pasona1");
+    }
   }, [onClick]);
+
+  useEffect(() => {
+    if (datas) {
+      setName(datas.user.name);
+      setEmail(datas.user.email);
+    }
+  }, [datas]);
 
   return (
     <Grid container m={1}>
       <Grid item xs={2}>
-        <Button color="primary" variant="contained" onClick={onClick}>
-          Get Location
+        <Button color="primary" variant="contained" onClick={handleClick}>
+          Get Pasona1
         </Button>
       </Grid>
-      <Grid container direction={"column"} item xs={10}>
-        <Grid item xs={2}>
-          <TextField label="ID" value={id} />
-        </Grid>
-        <Grid item xs={2}>
-          <TextField label="NAME" value={name} />
-        </Grid>
-        <TextField label="DESC" value={description} />
-        <TextField label="PHOTO" value={photo} />
+      <Grid container direction={"column"} item xs={3}>
+        <TextField value={name} disabled fullWidth />
+        <TextField value={email} disabled fullWidth />
       </Grid>
     </Grid>
   );

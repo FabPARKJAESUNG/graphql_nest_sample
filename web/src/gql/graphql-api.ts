@@ -1,9 +1,12 @@
 import * as Apollo from "@apollo/client";
 import { GET_USER } from "./queries";
+import { CREATE_USER } from "./mutations";
 
-export function useGetUserLazyQuery() {
-  return Apollo.useLazyQuery<any>(GET_USER);
+export function useGetUserLazyQuery(props?: { variables: { name: string } }) {
+  return Apollo.useLazyQuery(GET_USER, { variables: props?.variables });
 }
-// export function useDataListMutation(baseOptions?: any) {
-//   return Apollo.useMutation<any>(DataListUpdate, { ...baseOptions });
-// }
+export function useCreateUserMutation(props?: {
+  variables: { name: string; email: string };
+}) {
+  return Apollo.useMutation<any>(CREATE_USER, { variables: props?.variables });
+}

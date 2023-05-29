@@ -22,7 +22,7 @@ const typeDefs = `#graphql
   }
 
   type Query {
-    user(id: ID): User
+    user(name: String): User
     users: [User]
     posts: [Post]
   }
@@ -39,8 +39,8 @@ const prisma = new PrismaClient();
 const resolvers = {
   Query: {
     user: (parent, args) => {
-      return prisma.user.findUnique({
-        where: { id: args.id },
+      return prisma.user.findFirst({
+        where: { name: args.name },
         include: { posts: true },
       });
     },
